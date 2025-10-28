@@ -1,0 +1,71 @@
+[project]
+name = "rag_chatbot"
+version = "0.1.0"
+description = "A RAG chatbot built with LangChain and Gemini"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.116.1",
+    "uvicorn>=0.38.0",
+    "langchain>=1.0.2",
+    "langchain-community>=0.4.0",
+    "google-generativeai>=0.8.5",
+    "chromadb>=1.2.1",
+    "pypdf>=6.1.1",
+    "pdfplumber>=0.11.7",
+    "python-multipart>=0.0.20",
+    "pydantic>=2.12.3",
+    "pydantic-settings>=2.5.0",
+    "numpy>=2.3.4",
+    "pandas>=2.3.3",
+    "python-dotenv>=1.2.1",
+    "tiktoken>=0.12.0",
+    "aiofiles>=25.1.0",
+    "redis>=7.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.7.0",
+    "mypy>=1.11.0",
+    "ipython>=8.27.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["agent*", "api*", "config*", "data_sources*", "vectorstore*"]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.7.0",
+    "mypy>=1.11.0",
+    "ipython>=8.27.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "B", "UP"]
+ignore = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_mode = "auto"
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
