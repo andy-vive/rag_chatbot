@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from config.settings import Setting
+from config import Setting
 
 
 class BaseLLM(ABC):
