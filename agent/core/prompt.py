@@ -1,0 +1,3 @@
+
+class Prompt:
+    pass
