@@ -9,7 +9,7 @@ from config import Setting
 class LLMFactory:
 
     @staticmethod
-    def create(setting: Setting) -> Tuple[BaseChatModel, Embeddings]:
+    def create(setting: Setting) -> tuple[BaseChatModel, Embeddings]:
         if setting.llm_provider == "google":
             llm = ChatGoogleGenerativeAI(
                 google_api_key=setting.google_api_key,
