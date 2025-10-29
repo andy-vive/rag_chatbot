@@ -1,4 +1,4 @@
-from ast import Tuple
+from typing import Tuple
 
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
@@ -11,7 +11,7 @@ class LLMFactory:
 
     @staticmethod
     def create(setting: Setting) -> Tuple[BaseChatModel, Embeddings]:
-        if setting.llm_type == "google":
+        if setting.llm_provider == "google":
             llm = ChatGoogleGenerativeAI(
                 google_api_key=setting.google_api_key,
                 model=setting.gemini_model,
@@ -26,4 +26,4 @@ class LLMFactory:
 
             return llm, embedding
         else:
-            raise ValueError(f"Unknown LLM type: {setting.llm_type}")
+            raise ValueError(f"Unknown LLM type: {setting.llm_provider}")
