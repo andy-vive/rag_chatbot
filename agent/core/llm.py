@@ -1,4 +1,3 @@
-from typing import Tuple
 
 from langchain_core.embeddings import Embeddings
 from langchain_core.language_models import BaseChatModel
