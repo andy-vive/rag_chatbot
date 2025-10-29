@@ -1,3 +1,11 @@
+from typing import List, Dict
+from langchain_core.prompts import (
+    ChatPromptTemplate,
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+    MessagesPlaceholder,
+)
+
 
 class Prompt:
     SYSTEM_PROMPT = """
@@ -27,3 +35,34 @@ class Prompt:
     {conversation_history}
     </conversation_history>
     """
+
+    @classmethod
+    def get_prompt(cls) -> ChatPromptTemplate:
+        return ChatPromptTemplate.from_messages(
+            [
+                SystemMessagePromptTemplate.from_template(cls.SYSTEM_PROMPT),
+                MessagesPlaceholder(
+                    variable_name="conversation_history", optional=True
+                ),
+                HumanMessagePromptTemplate.from_template(
+                    """
+            <user_query>
+            {user_query}
+            </user_query>
+            """
+                ),
+            ]
+        )
+
+    @staticmethod
+    def format_chat_history(history: List[Dict]) -> List[tuple]:
+        """Format conversation history for LangChain"""
+        formatted = []
+        for msg in history:
+            role = msg.get("role")
+            content = msg.get("content", "")
+            if role == "user":
+                formatted.append(("human", content))
+            elif role == "assistant":
+                formatted.append(("ai", content))
+        return formatted
