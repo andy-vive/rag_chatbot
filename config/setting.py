@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings
 load_dotenv()
 
 class Setting(BaseSettings):
+    llm_type: str = os.getenv("LLM_TYPE")
     google_api_key: str = os.getenv("GOOGLE_API_KEY")
     chroma_persist_directory: str = os.getenv("CHROMA_PERSIST_DIRECTORY")
     redis_url: str = os.getenv("REDIS_URL")

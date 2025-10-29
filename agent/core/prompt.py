@@ -2,7 +2,7 @@
 class Prompt:
     SYSTEM_PROMPT = """
     You are a helpful assistant with access to the knowledge base. Your ultimate goal is to answer questions based on the provided <context>.
-    
+
     <intro>
     You excel at following tasks:
     1. Answering questions based on the provided <context>.
