@@ -21,8 +21,7 @@ async def chat(request: ChatRequest):
     agent = get_agent()
 
     if request.stream:
-        return StreamingResponse(
-            stream_response(agent, request), media_type="text/event-stream"
-        )
+        pass
+
     response = await agent.chat(request.query, request.session_id)
     return ChatResponse(response=response, session_id=request.session_id)
