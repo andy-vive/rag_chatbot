@@ -17,7 +17,7 @@ class RAGAgent:
         self._build_chain()
 
     async def chat(self, query: str, session_id: str) -> str:
-        
+
         chain_input = {
             "user_query": query,
             "conversation_history": self._get_conversation_history(session_id),
@@ -27,7 +27,7 @@ class RAGAgent:
         self.conversation_history.add(session_id, "user", query)
 
         response = await self.chain.ainvoke(chain_input)
-        
+
         self.conversation_history.add(session_id, "assistant", response)
 
         return response

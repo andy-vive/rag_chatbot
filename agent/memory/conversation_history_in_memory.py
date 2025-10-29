@@ -1,10 +1,9 @@
 from collections import deque
-from typing import Dict
 
 
 class ConversationHistoryInMemory:
     def __init__(self):
-        self.conversations: Dict[str, deque] = {}
+        self.conversations: dict[str, deque] = {}
 
     def get(self, session_id: str) -> deque:
         if session_id not in self.conversations:
