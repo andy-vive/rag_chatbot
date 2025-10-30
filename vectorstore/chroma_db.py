@@ -1,3 +1,4 @@
+import asyncio
 import uuid
 
 import chromadb
@@ -22,7 +23,7 @@ class ChromaDB(BaseVectorStore):
 
     async def add_documents(
         self,
-        documents: list[Document],
+        documents: list[dict],
         batch_size: int = 100,
     ):
         await self._get_or_create_collection()
@@ -32,17 +33,17 @@ class ChromaDB(BaseVectorStore):
         for i in range(0, len(documents), batch_size):
             batch = documents[i : i + batch_size]
 
-            batch_ids = [doc.metadata.get("id", str(uuid.uuid4())) for doc in batch]
-            batch_texts = [doc.page_content for doc in batch]
-            batch_metadatas = [doc.metadata for doc in batch]
+            batch_ids = [doc["id"] for doc in batch]
+            batch_texts = [doc["content"] for doc in batch]
+            batch_metadatas = [doc["metadata"] for doc in batch]
 
-            embeddings = await self.embedding_function.aembed_documents(batch_texts)
+            embeddings = self.embedding_function.embed_documents(batch_texts)
 
             self.collection.add(
                 ids=batch_ids,
                 documents=batch_texts,
                 metadatas=batch_metadatas,
-                embeddings=embeddings
+                embeddings=embeddings,
             )
             ids.extend(batch_ids)
 

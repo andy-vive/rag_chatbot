@@ -1,6 +1,6 @@
 import hashlib
 from datetime import datetime
-from types import Dict
+from typing import Dict
 
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_core.documents import Document
@@ -33,6 +33,7 @@ class PDFLoader:
         for i, chunk in enumerate(chunks):
             doc_id = self._gen_doc_id(chunk, i)
             metadata = {
+                "id": doc_id,
                 "source": pdf_path,
                 "filename": pdf_path,
                 "chunk_index": i,
