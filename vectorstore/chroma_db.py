@@ -52,14 +52,60 @@ class ChromaDB(BaseVectorStore):
         query: str,
         k: int = 5,
     ) -> list[Document]:
-        pass
+        await self._get_or_create_collection()
+        
+        query_embedding = self.embedding_function.embed_query(query)
+        
+        loop = asyncio.get_event_loop()
+        
+        def _search():
+            results = self.collection.query(
+                query_embeddings=[query_embedding],
+                n_results=k,
+                include=["documents", "metadatas", "distances"]
+            )
+            return results
+        
+        results = await loop.run_in_executor(None, _search)
+        
+        documents = []
+        for i in range(len(results["documents"][0])):
+            doc = Document(
+                page_content=results["documents"][0][i],
+                metadata=results["metadatas"][0][i] if results["metadatas"][0] else {}
+            )
+            documents.append(doc)
+        
+        return documents
 
     async def search_by_vector(
         self,
         embedding: list[float],
         k: int = 5,
     ) -> list[Document]:
-        pass
+        await self._get_or_create_collection()
+        
+        loop = asyncio.get_event_loop()
+        
+        def _search():
+            results = self.collection.query(
+                query_embeddings=[embedding],
+                n_results=k,
+                include=["documents", "metadatas", "distances"]
+            )
+            return results
+        
+        results = await loop.run_in_executor(None, _search)
+        
+        documents = []
+        for i in range(len(results["documents"][0])):
+            doc = Document(
+                page_content=results["documents"][0][i],
+                metadata=results["metadatas"][0][i] if results["metadatas"][0] else {}
+            )
+            documents.append(doc)
+        
+        return documents
 
     async def _initialize(self):
         """Initialize ChromaDB client and collection"""
