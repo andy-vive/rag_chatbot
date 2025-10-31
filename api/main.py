@@ -25,12 +25,13 @@ async def lifespan(app: FastAPI):
     setting = Setting()
 
     llm, embedding = LLMFactory.create(setting)
-    agent = RAGAgent(llm, embedding)
-
+    
     vector_store = VectorStoreFactory.create(
         setting.vector_store_type,
         embedding_function=embedding,
     )
+    
+    agent = RAGAgent(llm, embedding, vector_store)
 
     chat.agent = agent
     document.vector_store = vector_store
